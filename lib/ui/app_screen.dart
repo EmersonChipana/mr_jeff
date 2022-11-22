@@ -33,7 +33,6 @@ class _AppScreenState extends State<AppScreen> {
         builder: (BuildContext context, AppState state) {
           if (state.isLoading) {
             return const Center(child: CircularProgressIndicator());
-            
           }
 
           return buildBody(state);
@@ -58,3 +57,5 @@ class _AppScreenState extends State<AppScreen> {
     );
   }
 }
+
+// Navigator.pushNamed(context, "/order");
