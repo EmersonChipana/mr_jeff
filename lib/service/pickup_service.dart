@@ -30,8 +30,8 @@ class PickUpService{
     if(response.statusCode == 200){
       ResponseDto backendResponse = ResponseDto.fromJson(jsonDecode(response.body));
       if(backendResponse.success){
-        print('pickUpCreatedSuccessfully === ${backendResponse.data['pickUpCreatedSuccessfully']}');
-        if(backendResponse.data['pickUpCreatedSuccessfully']){
+        print('wasCreated === ${backendResponse.data['wasCreated']}');
+        if(backendResponse.data['wasCreated']){
           result = true;
         }
       }else{
