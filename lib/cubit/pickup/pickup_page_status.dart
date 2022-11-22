@@ -1,0 +1,10 @@
+enum PageStatus { initial,
+  loading,
+  success,
+  failure,
+  verifying,
+  correctVerified,
+  incorrectVerified,
+  verifying2 ,
+  correctVerified2,
+  incorrectVerified2}

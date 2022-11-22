@@ -6,6 +6,10 @@ import 'package:mr_jeff/ui/order_screen.dart';
 import 'package:mr_jeff/ui/index.dart';
 import 'package:mr_jeff/ui/login.dart';
 import 'package:mr_jeff/ui/home_main_page.dart';
+import 'package:mr_jeff/ui/pickup_page.dart';
+import 'package:mr_jeff/ui/prepickup_page.dart';
+
+import 'cubit/pickup/prepickup/prepickup_cubit.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,8 +20,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: ((context) => AppCubit()),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<AppCubit>(
+            create: ((context) => AppCubit())
+        ),
+        BlocProvider<PrePickupCubit>(
+          create: (BuildContext context) => PrePickupCubit(),
+        ),
+      ],
+
       child: MaterialApp(
         title: 'Mr. Jeff',
         theme: ThemeData(
@@ -29,6 +41,8 @@ class MyApp extends StatelessWidget {
           "/order": (context) => const OrderScreen(),
           "/login": (context) => const LoginPage(),
           "/home": (context) => HomePage(),
+          '/pickup': (context) => const PickUpPage(),
+          '/prepickup': (context) => const PrePickUpPage()
           //"/login": ((context) => const LoginScreen())
         },
       ),
