@@ -1,16 +1,18 @@
-import 'dart:convert';
+ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:mr_jeff/dto/prepickup_dto.dart';
 import 'package:mr_jeff/dto/response_dto.dart';
+import 'package:mr_jeff/const.dart'; // key and ip 
+
 class PrePickUpService{
 
-  static const String backendUrlBase = "http://192.168.100.67:7777";
+ 
 
   static Future<PrePickUpDto> getPrePickUp(int userId, String token) async{
 
     PrePickUpDto result;
 
-    // http://localhost:7777/api/v1/test/prePickUp/5
+ 
     var uri = Uri.parse("$backendUrlBase/api/v1/test/prePickUp/$userId");
     Map<String, String> headers = {
       'Accept': 'application/json',
@@ -34,7 +36,7 @@ class PrePickUpService{
       }
     }else{
       throw Exception(
-          "Error desconocido al intentar consultar la informacion de un prepickup"
+        "Error desconocido al intentar consultar la informacion de un prepickup"
       );
     }
 
@@ -42,7 +44,7 @@ class PrePickUpService{
     return result;
   }
 
-  static Future<int> isValidAreaService(Map<String, double> coord, String token)async {
+  static Future<int> isValidAreaService(Map<String, double> coord, String? token)async {
     int result = -1;
     //await Future.delayed(Duration(seconds: 1));
 
@@ -72,7 +74,7 @@ class PrePickUpService{
     }else{
       throw Exception("Error del backend");
     }
-
+    
 
     return result;
   }

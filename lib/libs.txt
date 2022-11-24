@@ -7,3 +7,4 @@ flutter pub add http
 flutter pub add flutter_polyline_points
 flutter pub add flutter_secure_storage
 flutter pub add intl
+flutter pub add flutter_spinkit

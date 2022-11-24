@@ -3,9 +3,10 @@ import 'dart:convert';
 import 'package:mr_jeff/dto/login_response_dto.dart';
 import 'package:mr_jeff/dto/response_dto.dart';
 import 'package:http/http.dart' as http;
+import 'package:mr_jeff/const.dart'; // key and ip
 
 class LoginService {
-  static const String backendUrlBase = "http://192.168.0.7:7777";
+
   static Future<LoginResponseDto> login(
       String username, String password) async {
     LoginResponseDto result;

@@ -8,7 +8,9 @@ import 'package:mr_jeff/ui/login.dart';
 import 'package:mr_jeff/ui/home_main_page.dart';
 import 'package:mr_jeff/ui/pickup_page.dart';
 import 'package:mr_jeff/ui/prepickup_page.dart';
+import 'package:mr_jeff/ui/worker_diary.dart';
 
+import 'cubit/operation_workers/opercourier_cubit.dart';
 import 'cubit/pickup/prepickup/prepickup_cubit.dart';
 
 void main() {
@@ -28,6 +30,9 @@ class MyApp extends StatelessWidget {
         BlocProvider<PrePickupCubit>(
           create: (BuildContext context) => PrePickupCubit(),
         ),
+        BlocProvider<OpeCourierCubit>(
+          create: (BuildContext context) => OpeCourierCubit(),
+        )
       ],
 
       child: MaterialApp(
@@ -42,7 +47,8 @@ class MyApp extends StatelessWidget {
           "/login": (context) => const LoginPage(),
           "/home": (context) => HomePage(),
           '/pickup': (context) => const PickUpPage(),
-          '/prepickup': (context) => const PrePickUpPage()
+          '/prepickup': (context) => const PrePickUpPage(),
+          '/workerDiary': (context) => const WorkerDiaryPage()
           //"/login": ((context) => const LoginScreen())
         },
       ),

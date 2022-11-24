@@ -1,10 +1,10 @@
-import 'package:flutter/material.dart';
+ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mr_jeff/cubit/pickup/prepickup/prepickup_state.dart';
-import 'package:mr_jeff/cubit/pickup/prepickup/prepickup_cubit.dart';
-import 'package:mr_jeff/cubit/pickup/pickup_page_status.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:mr_jeff/cubit/pickup/al_pagestatus.dart';
+import 'package:mr_jeff/cubit/pickup/prepickup/prepickup_cubit.dart';
+import 'package:mr_jeff/cubit/pickup/prepickup/prepickup_state.dart';
 
 
 class PrePickUpPage extends StatefulWidget {
@@ -36,25 +36,25 @@ class _PrePickUpPageState extends State<PrePickUpPage> {
       body: BlocConsumer<PrePickupCubit,PrePickupState>(
         listener: (ctx3, state)  {
           if(state.status == PageStatus.verifying){
-            print(' 0 ----------> pagestatus.verifying');
+
 
             _showDialog(context, "Sucursales",
                 "Verificando si el servicio esta disponible en la ubicacion seleccionada", false);
           }else if(state.status == PageStatus.correctVerified){
-            print(' 0 ----------> pagestatus.correctVerified');
-            Navigator.pop(ctx3);
-            print(state.lessData());
-            BlocProvider.of<PrePickupCubit>(context)
-                .setPageState(PageStatus.success);
-            Navigator.pushNamed(ctx3, '/pickup');
+
+              Navigator.pop(ctx3);
+
+              BlocProvider.of<PrePickupCubit>(context)
+                  .setPageState(PageStatus.success);
+              Navigator.pushNamed(ctx3, '/pickup');
           }else if(state.status == PageStatus.incorrectVerified){
-            print(' 0 ----------> pagestatus.incorrectVerified');
+
             Navigator.pop(ctx3);
 
             BlocProvider.of<PrePickupCubit>(context)
                 .setPageState(PageStatus.success);
             _showDialog(context, "Lo sentimos",
-                state.errorMessage!, true);
+                 state.errorMessage!, true);
 
 
           }
@@ -95,7 +95,7 @@ class _PrePickUpPageState extends State<PrePickUpPage> {
               ElevatedButton(onPressed: (){
                 print(state.toString());
                 BlocProvider.of<PrePickupCubit>(context)
-                    .passToOtherPage();
+                  .passToOtherPage();
 
 
               }, child: const Text("Continuar")),
@@ -221,10 +221,10 @@ class _PrePickUpPageState extends State<PrePickUpPage> {
                       child: Center(
                           child: Text(
                               ' ${state.prePickUpInfo!.finalListTime[index].dia.getNameDayAndDate()} ' )
-                      ),
+                          ),
                       color: state.pointerDate == index ? Colors.green : Colors.white,
-                    ),
-                  );
+                      ),
+                    );
 
                 },
 
@@ -251,7 +251,7 @@ class _PrePickUpPageState extends State<PrePickUpPage> {
                       height: 40,
                       child: Center(
                           child: Text (
-                              '${state.prePickUpInfo!.finalListTime[state.pointerDate].horas[index].getStringTimeFormat()}'
+                            '${state.prePickUpInfo!.finalListTime[state.pointerDate].horas[index].getStringTimeFormat()}'
                           )
                       ),
                       color: index == state.pointerTime ? Colors.blue : Colors.white,
@@ -319,7 +319,7 @@ class _PrePickUpPageState extends State<PrePickUpPage> {
                       Navigator.of(context).pop();
                     },
                     selected:
-                    state.pointerAddress == index,
+                      state.pointerAddress == index,
                   );
                 },
               ),
@@ -364,6 +364,38 @@ class _PrePickUpPageState extends State<PrePickUpPage> {
             child: ListBody(
               children: <Widget>[
                 Text(message),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            closeable
+                ? TextButton(
+              child: const Text('Cerrar'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            )
+                : Container(),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _showLoadingDialog(BuildContext context, String title, String message,
+      bool closeable) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text(message),
+                const CircularProgressIndicator(),
+
               ],
             ),
           ),
