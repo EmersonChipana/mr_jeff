@@ -25,7 +25,7 @@ class IndexScreen extends StatelessWidget {
               ),
               ElevatedButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, "/");
+                    Navigator.pushNamed(context, "/login");
                   },
                   child: const Text('Inicio de Sesión')),
               const SizedBox(

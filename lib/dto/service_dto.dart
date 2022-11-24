@@ -1,17 +1,31 @@
-class Service {
-  final int? id;
-  final String? service;
-  final String? price;
-  final String? description;
+class ServiceDto {
+  final int serviceId;
+  final double price;
+  final String catStatus;
+  final int principalService;
+  final String size;
+  final String detTitle;
+  final String detDescription;
 
-  Service({this.id, this.service, this.price, this.description});
+  ServiceDto({
+    required this.serviceId,
+    required this.price,
+    required this.catStatus,
+    required this.principalService,
+    required this.size,
+    required this.detTitle,
+    required this.detDescription,
+  });
 
-  factory Service.fromJson(Map<String, dynamic> json) {
-    return Service(
-      id: json['id'],
-      service: json['service'],
+  factory ServiceDto.fromJson(Map<String, dynamic> json) {
+    return ServiceDto(
+      serviceId: json['serviceId'],
       price: json['price'],
-      description: json['description'],
+      catStatus: json['catStatus'],
+      principalService: json['principalService'],
+      size: json['size'],
+      detTitle: json['detTitle'],
+      detDescription: json['detDescription'],
     );
   }
 }

@@ -1,9 +1,9 @@
-import 'package:mr_jeff/dto/product_dto.dart';
+import 'package:mr_jeff/dto/clothing_card_dto.dart';
 
 class ProductsState {
   final bool isLoading;
   final String? error;
-  final List<Product> products;
+  final List<ClothingCardDto> products;
 
   const ProductsState({
     this.isLoading = false,
@@ -14,7 +14,7 @@ class ProductsState {
   ProductsState copyWith({
     bool? isLoading,
     String? error,
-    List<Product>? products,
+    List<ClothingCardDto>? products,
   }) {
     return ProductsState(
       isLoading: isLoading ?? this.isLoading,

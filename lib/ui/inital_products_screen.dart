@@ -1,7 +1,6 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:mr_jeff/cubit/inital_products/inital_products_cubit.dart';
 import 'package:mr_jeff/cubit/inital_products/inital_products_state.dart';
 import 'package:mr_jeff/widget/page_of_products.dart';
@@ -18,23 +17,45 @@ class _InitalProductsScreenState extends State<InitalProductsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-        length: screenCubit.state.categories.length,
-        child: Scaffold(
-          appBar: AppBar(
-            title: const Text('Mr. Jeff'),
-            bottom: TabBar(
-              isScrollable: true,
-              tabs: screenCubit.state.categories
-                  .map((category) => Tab(text: category.category))
-                  .toList(),
-            ),
-          ),
-          body: TabBarView(
-            children: screenCubit.state.categories
-                .map((category) => PageOfProducts(categoryId: category.id ?? 0))
-                .toList(),
-          ),
-        ));
+    return BlocConsumer<InitalProductsCubit, InitalProductsState>(
+      bloc: screenCubit,
+      listener: (BuildContext context, InitalProductsState state) {
+        if (state.error != null) {
+          // TODO your code here
+          print("Error");
+        }
+      },
+      builder: (BuildContext context, InitalProductsState state) {
+        if (state.isLoading) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        return DefaultTabController(
+            length: screenCubit.state.categories.length,
+            child: Scaffold(
+              floatingActionButton: FloatingActionButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, "/order");
+                },
+                child: const Icon(Icons.shopping_cart),
+              ),
+              appBar: AppBar(
+                title: const Text('Mr. Jeff'),
+                bottom: TabBar(
+                  isScrollable: true,
+                  tabs: screenCubit.state.categories
+                      .map((category) => Tab(text: category.category))
+                      .toList(),
+                ),
+              ),
+              body: TabBarView(
+                children: screenCubit.state.categories
+                    .map((category) =>
+                        PageOfProducts(categoryId: category.id ?? 1))
+                    .toList(),
+              ),
+            ));
+      },
+    );
   }
 }

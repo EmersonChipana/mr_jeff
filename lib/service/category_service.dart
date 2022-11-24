@@ -8,12 +8,12 @@ import 'package:mr_jeff/ip.dart';
 class CategoryService {
   static String url = ipUrl;
 
-  Future<List<CategoryDto>> getCategories(String token) async {
+  Future<List<CategoryDto>> getCategories() async {
     List<CategoryDto> result = [];
-    var uri = Uri.parse("$url/api/v1/product/categories");
+    var uri = Uri.parse("$url/api/v1/product/category/all");
     Map<String, String> headers = {
       "Accept": "application/json",
-      'Authorization': 'Bearer $token',
+      //'Authorization': 'Bearer $token',
     };
     var response = await http.get(uri, headers: headers);
     if (response.statusCode == 200) {

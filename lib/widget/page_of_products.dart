@@ -9,30 +9,34 @@ class PageOfProducts extends StatelessWidget {
 
   PageOfProducts({Key? key, required this.categoryId}) : super(key: key);
 
+  final screenCubit = ProductsCubit();
+
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ProductsCubit, ProductsState>(
-      builder: ((context, state) {
+    screenCubit.loadCategoryProducts(categoryId);
+    return BlocConsumer<ProductsCubit, ProductsState>(
+      bloc: screenCubit,
+      listener: (BuildContext context, ProductsState state) {
+        if (state.error != null) {
+          print("Error Producto");
+        }
+      },
+      builder: (BuildContext context, ProductsState state) {
         if (state.isLoading) {
           return const Center(child: CircularProgressIndicator());
-        } else {
-          if (state.error != null) {
-            return Center(child: Text(state.error!));
-          } else {
-            return ListView.builder(
-              itemCount: state.products.length,
-              itemBuilder: (context, index) {
-                return ProductCard(
+        }
+
+        return ListView.builder(
+            itemCount: state.products.length,
+            itemBuilder: (context, index) {
+              return ProductCard(
                   title: state.products[index].title,
                   price: state.products[index].price,
                   imageUrl: state.products[index].image,
                   id: state.products[index].id,
-                );
-              },
-            );
-          }
-        }
-      }),
+                  service: state.products[index].services);
+            });
+      },
     );
   }
 }
