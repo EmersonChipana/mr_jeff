@@ -1,6 +1,7 @@
-import 'package:bloc/bloc.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mr_jeff/cubit/pickup/pickup_page_status.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:mr_jeff/cubit/pickup/al_pagestatus.dart';
 import 'package:mr_jeff/cubit/pickup/prepickup/prepickup_state.dart';
 import 'package:mr_jeff/dto/prepickup_dto.dart';
 import 'package:mr_jeff/model/prepickup_model/prepickup_info_model.dart';
@@ -12,18 +13,27 @@ class PrePickupCubit extends Cubit<PrePickupState> {
 
   void init() async {
     emit(state.copyWith(status: PageStatus.loading));
+    final storage = FlutterSecureStorage();
+    String? token = await storage.read(key: "TOKEN");
     try{
-      PrePickUpDto prePickUpDto = await PrePickUpService.getPrePickUp(5, "token aqui XD");
-      PrePickUpInfo prePickUpInfo  = PrePickUpInfo(
-          holidays: prePickUpDto.holidays,
-          daysToWork: prePickUpDto.daysPermitted,
-          listOfMapOfHours: prePickUpDto.horas,
-          listOfMapOfAddresses: prePickUpDto.addresses);
-      prePickUpInfo.processData();
+      if(token != null){
+        PrePickUpDto prePickUpDto = await PrePickUpService.getPrePickUp(0, token);
+        PrePickUpInfo prePickUpInfo  = PrePickUpInfo(
+            holidays: prePickUpDto.holidays,
+            daysToWork: prePickUpDto.daysPermitted,
+            listOfMapOfHours: prePickUpDto.horas,
+            listOfMapOfAddresses: prePickUpDto.addresses);
+        prePickUpInfo.processData();
 
-      emit(state.copyWith(
-          status: PageStatus.success, prePickUpInfo:  prePickUpInfo
-      ));
+        emit(state.copyWith(
+            status: PageStatus.success, prePickUpInfo:  prePickUpInfo
+        ));
+      }else{
+        //TODO: botar al usario
+        emit(state.copyWith(
+            status: PageStatus.failure,
+            errorMessage: "Usuario no autenticado"));
+      }
     }on Exception catch(ex, stacktrace){
       emit(state.copyWith(
           status: PageStatus.failure,
@@ -33,10 +43,14 @@ class PrePickupCubit extends Cubit<PrePickupState> {
   }
 
   void passToOtherPage() async{
+
+
     emit(state.copyWith(status: PageStatus.verifying));
+    final storage = FlutterSecureStorage();
+    String? token = await storage.read(key: "TOKEN");
     try{
       if(state.coordinates.isNotEmpty){
-        int result = await PrePickUpService.isValidAreaService(state.coordinates, "token aqui XD");
+        int result = await PrePickUpService.isValidAreaService(state.coordinates, token);
         if(result == 1){
           emit(state.copyWith(status: PageStatus.correctVerified));
         }else{
@@ -73,26 +87,36 @@ class PrePickupCubit extends Cubit<PrePickupState> {
   void endPickUp(String name, String detail)async{
 
     emit(state.copyWith(status: PageStatus.verifying2));
+    final storage = FlutterSecureStorage();
+    String? token = await storage.read(key: "TOKEN");
 
     try{
 
-      Map<String, dynamic> maped = mapTheRequest(name, detail);
+      if(token != null){
+        Map<String, dynamic> maped = mapTheRequest(name, detail);
 
-      // procesos para llamar al servicio
-      bool stado = await PickUpService.addNewPickUp(maped, "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJicGhpbm5pczQiLCJyb2xlcyI6WyJ2aWV3V29ya1N0YXR1cyIsImNyZWF0ZVBpY2tVcCIsImNhbmNlbFBpY2tVcCIsImNyZWF0ZURlbGl2ZXJ5IiwiY2FuY2VsRGVsaXZlcnkiXSwiaXNzIjoidWNiIiwicmVmcmVzaCI6ZmFsc2UsImV4cCI6MTY2OTE0NDQ2OH0.9qHjakLgIJt6KvFnrfHGUJ3aLATgAD95ogPR1N9rIAc");
+        // procesos para llamar al servicio
+        bool stado = await PickUpService.addNewPickUp(maped, token);
 
-      print('(PrepickupCubit) == (endPickUpRequest): $stado');
 
-      if(stado){
-        emit(state.copyWith(status: PageStatus.correctVerified2 ));
+
+        if(stado){
+          emit(state.copyWith(status: PageStatus.correctVerified2 ));
+        }else{
+          emit(state.copyWith(status: PageStatus.incorrectVerified2, errorMessage: 'Algo saliio mal'));
+        }
       }else{
-        emit(state.copyWith(status: PageStatus.incorrectVerified2, errorMessage: 'Algo saliio mal'));
+        // TODO No hay token deberíamos botar al usuario al login
+        emit(state.copyWith(
+            status: PageStatus.failure,
+            errorMessage: "Usuario no autenticado"));
       }
 
     }on Exception catch(ex, stacktrace){
+      print('ex: $ex stacktrace $stacktrace');
       emit(state.copyWith(
           status: PageStatus.failure,
-          errorMessage: "Error al crear un nuevo pickUP valid braches $ex \n $stacktrace"));
+          errorMessage: ex.toString()));
     }
   }
 

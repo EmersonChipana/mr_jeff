@@ -1,8 +1,10 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mr_jeff/cubit/pickup/prepickup/prepickup_state.dart';
+import 'package:mr_jeff/cubit/pickup/al_pagestatus.dart';
 import 'package:mr_jeff/cubit/pickup/prepickup/prepickup_cubit.dart';
-import 'package:mr_jeff/cubit/pickup/pickup_page_status.dart';
+import 'package:mr_jeff/cubit/pickup/prepickup/prepickup_state.dart';
+ 
 
 class PickUpPage extends StatefulWidget {
   const PickUpPage({Key? key}) : super(key: key);
@@ -20,6 +22,7 @@ class _PickUpPageState extends State<PickUpPage> {
       appBar: AppBar(
         title: Text('Finaliza la solicitud'),
       ),
+<<<<<<< HEAD
       body: BlocConsumer<PrePickupCubit, PrePickupState>(
         builder: (context, state) {
           return _newAddressForUser(context, state);
@@ -52,6 +55,52 @@ class _PickUpPageState extends State<PickUpPage> {
 
             //Navigator.of(context).popUntil((route) => route.isFirst);
           }
+=======
+      body: BlocConsumer<PrePickupCubit,PrePickupState>(
+          builder: (context, state){
+            return _newAddressForUser(context, state);
+          },
+        listener: (context, state){
+            if(state.status == PageStatus.verifying2){
+              print(' 1 ----------> pagestatus.verifying2');
+              BlocProvider.of<PrePickupCubit>(context)
+                  .setPageState(PageStatus.success);
+              _showDialog(context, 'Ingresando', 'Se esta creando la solicitud', false , (){  });
+
+            }else if(state.status == PageStatus.incorrectVerified2){
+              print(' 1 ----------> pagestatus.incorrectVerified2');
+              _showDialog(context, 'Error', state.errorMessage!, true, (){
+                Navigator.of(context).pop();
+              });
+              BlocProvider.of<PrePickupCubit>(context)
+                  .setPageState(PageStatus.success);
+            } else if(state.status == PageStatus.correctVerified2){
+
+              print(' 1 ----------> pagestatus.correctVerified');
+              _showDialog(context, 'THANK YOU', 'SE CREO EL PICK UP EXITOSAMENTE', true , (){
+                print('pageStatus.correctvVerified');
+                Navigator.popUntil(context, ModalRoute.withName('/home'));
+                BlocProvider.of<PrePickupCubit>(context)
+                    .setPageState(PageStatus.success);
+                BlocProvider.of<PrePickupCubit>(context)
+                    .setInitial( );
+
+              });
+
+
+
+                //Navigator.of(context).popUntil((route) => route.isFirst);
+            } else if(state.status == PageStatus.failure){
+              Navigator.of(context).pop();
+              _showDialog(context, 'No se pudo completar  el pickup', state.errorMessage!, true, () {
+                Navigator.popUntil(context, ModalRoute.withName('/home'));
+                BlocProvider.of<PrePickupCubit>(context)
+                    .setPageState(PageStatus.success);
+                BlocProvider.of<PrePickupCubit>(context)
+                    .setInitial( );
+              });
+            }
+>>>>>>> 00d8b256f87f487b77fa7eb5c55adbb18d67d4ba
         },
       ),
     );
@@ -111,8 +160,14 @@ class _PickUpPageState extends State<PickUpPage> {
                         TextField(
                           controller: _controller1,
                           decoration: const InputDecoration(
+<<<<<<< HEAD
                               hintText: "Nombre que deseas asignar",
                               border: OutlineInputBorder()),
+=======
+                            hintText: "Nombre que deseas asignar",
+                              border: OutlineInputBorder()
+                          ),
+>>>>>>> 00d8b256f87f487b77fa7eb5c55adbb18d67d4ba
                         ),
                         SizedBox(
                           height: 20,
@@ -120,8 +175,14 @@ class _PickUpPageState extends State<PickUpPage> {
                         TextField(
                           controller: _controller2,
                           decoration: const InputDecoration(
+<<<<<<< HEAD
                               hintText: "Detalles que quieras agregar",
                               border: OutlineInputBorder()),
+=======
+                            hintText: "Detalles que quieras agregar",
+                              border: OutlineInputBorder()
+                          ),
+>>>>>>> 00d8b256f87f487b77fa7eb5c55adbb18d67d4ba
                         ),
                       ],
                     ),
@@ -167,6 +228,11 @@ class _PickUpPageState extends State<PickUpPage> {
             ),
           ),
           Container(
+<<<<<<< HEAD
+=======
+          
+
+>>>>>>> 00d8b256f87f487b77fa7eb5c55adbb18d67d4ba
             child: Container(
               color: Colors.pink,
               child: Row(
@@ -197,8 +263,15 @@ class _PickUpPageState extends State<PickUpPage> {
     );
   }
 
+<<<<<<< HEAD
   Future<void> _showDialog(BuildContext context, String title, String message,
       bool closeable, VoidCallback callback) async {
+=======
+  Future<void> _showDialog(BuildContext context,
+      String title, String message,
+      bool closeable,
+      VoidCallback callback) async {
+>>>>>>> 00d8b256f87f487b77fa7eb5c55adbb18d67d4ba
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!

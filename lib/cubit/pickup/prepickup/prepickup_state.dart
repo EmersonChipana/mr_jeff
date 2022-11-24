@@ -1,6 +1,6 @@
 
 import 'package:equatable/equatable.dart';
-import 'package:mr_jeff/cubit/pickup/pickup_page_status.dart';
+import 'package:mr_jeff/cubit/pickup/al_pagestatus.dart';
 import 'package:mr_jeff/model/prepickup_model/prepickup_info_model.dart';
 
 class PrePickupState extends Equatable{
