@@ -79,7 +79,6 @@ class HomePage extends StatelessWidget {
   }
 }
 
-
 class NavDrawer extends StatelessWidget {
   const NavDrawer({Key? key}) : super(key: key);
 
@@ -98,14 +97,13 @@ class NavDrawer extends StatelessWidget {
                 color: Colors.green,
                 image: DecorationImage(
                     fit: BoxFit.fill,
-                    image:  NetworkImage('https://enmicasa.com/wp-content/uploads/2013/04/La-lavanderi%CC%81a.jpg')
-                )
-            ),
+                    image: NetworkImage(
+                        'https://enmicasa.com/wp-content/uploads/2013/04/La-lavanderi%CC%81a.jpg'))),
           ),
           ListTile(
             leading: Icon(Icons.input),
             title: Text('Solicitar un pickup'),
-            onTap: ()  {
+            onTap: () {
               Navigator.of(context).pop();
               Navigator.pushNamed(context, '/prepickup');
             },
@@ -130,6 +128,14 @@ class NavDrawer extends StatelessWidget {
             title: Text('Logout'),
             onTap: () => {Navigator.of(context).pop()},
           ),
+          ListTile(
+              leading: Icon(Icons.border_color),
+              title: Text("PICKUP V2"),
+              onTap: () {
+                Navigator.of(context).pop();
+              Navigator.pushNamed(context, '/prepickupv2');
+              }
+          )
         ],
       ),
     );
