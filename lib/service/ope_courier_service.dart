@@ -13,11 +13,9 @@ class OpeCourierService{
 
     var uri = Uri.parse('$backendUrlBase/api/v1/test/available');
 
-    String token1 = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJyYnVsbDMiLCJyb2xlcyI6WyJ2aWV3UGlja1VwIiwidmlld0RlbGl2ZXJ5IiwiYWNjZXB0UGlja1VwIiwiYWNjZXB0RGVsaXZlcnkiXSwiaXNzIjoidWNiIiwicmVmcmVzaCI6ZmFsc2UsImV4cCI6MTY2OTI3NzQwM30.YGDunXFzmWoaOED941ErL5aSXuYPfwjxb4_EddOqeL4';
-
     Map<String, String> headers = {
       'Accept': 'application/json',
-      'Authorization': 'Bearer $token1'
+      'Authorization': 'Bearer $token'
     };
     var response = await http.get(uri, headers: headers);
 
@@ -26,11 +24,13 @@ class OpeCourierService{
       if(backendResponse.success){
         result = OpeCourierDto.fromJson(backendResponse.data);
       }else{
+
+
         throw Exception(backendResponse.message);
       }
     }else{
       throw Exception(
-          "Lo mas probalble error del servidro ${response.statusCode}"
+          "Lo mas probalble error del servidor ${response.statusCode}"
       );
     }
     return result;
@@ -49,12 +49,12 @@ class OpeCourierService{
       "operation": flag.operation,
       "accepted": accepted
     };
-    String elimnarToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJyYnVsbDMiLCJyb2xlcyI6WyJ2aWV3UGlja1VwIiwidmlld0RlbGl2ZXJ5IiwiYWNjZXB0UGlja1VwIiwiYWNjZXB0RGVsaXZlcnkiXSwiaXNzIjoidWNiIiwicmVmcmVzaCI6ZmFsc2UsImV4cCI6MTY2OTI4NzQ4OX0.aP__OdK5DXpuqz1waZyF7SMbpp6mHBtQ_GVnu0nguU4';
+
     var body = jsonEncode(mapa);
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
-      'Authorization': 'Bearer $elimnarToken'
+      'Authorization': 'Bearer $token'
     };
     var response = await http.post(uri, headers: headers, body: body);
 

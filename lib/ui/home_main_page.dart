@@ -135,6 +135,14 @@ class NavDrawer extends StatelessWidget {
                 Navigator.of(context).pop();
               Navigator.pushNamed(context, '/prepickupv2');
               }
+          ),
+          ListTile(
+              leading: Icon(Icons.border_color),
+              title: Text("Ver courier operations"),
+              onTap: () {
+                Navigator.of(context).pop();
+                Navigator.pushNamed(context, '/workerDiaryV2');
+              }
           )
         ],
       ),

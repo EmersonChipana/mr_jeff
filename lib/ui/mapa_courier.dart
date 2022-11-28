@@ -71,7 +71,7 @@ class _MapWorkerPageState extends State<MapWorkerPage> {
                 () {
                     BlocProvider.of<OpeCourierCubit>(context).
                         setPageState(PageStatus.loading);
-                    Navigator.popUntil(context, ModalRoute.withName('/workerDiary'));
+                    Navigator.popUntil(context, ModalRoute.withName('/workerDiaryV2'));
                     },
               'Cerrar'
             );

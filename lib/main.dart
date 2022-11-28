@@ -10,6 +10,7 @@ import 'package:mr_jeff/ui/home_main_page.dart';
 import 'package:mr_jeff/ui/pickup_v2_page.dart';
 import 'package:mr_jeff/ui/prepickup_v2_page.dart';
 import 'package:mr_jeff/ui/worker_diary.dart';
+import 'package:mr_jeff/ui/worker_diary_v2_page.dart';
 
 import 'cubit/operation_workers/opercourier_cubit.dart';
 import 'cubit/pickup/prepickup/prepickup_cubit.dart';
@@ -49,7 +50,8 @@ class MyApp extends StatelessWidget {
           "/home": (context) => HomePage(),
           '/workerDiary': (context) => const WorkerDiaryPage(),
           '/prepickupv2':(context) => const PrePickUpPageV2(),
-          '/pickupv2': (context) =>const PickUpPageV2()
+          '/pickupv2': (context) =>const PickUpPageV2(),
+          '/workerDiaryV2': (context) =>const WorkerDiaryPageV2(),
           //"/login": ((context) => const LoginScreen())
         },
       ),
