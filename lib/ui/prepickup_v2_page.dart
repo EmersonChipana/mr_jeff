@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mr_jeff/cubit/pickup/al_pagestatus.dart';
 import 'package:mr_jeff/cubit/pickup/pickup_cubit.dart';
 import 'package:mr_jeff/cubit/pickup/pickup_state.dart';
+import 'package:mr_jeff/widget/dialogs.dart';
 
 class PrePickUpPageV2 extends StatefulWidget {
   const PrePickUpPageV2({Key? key}) : super(key: key);
@@ -22,6 +23,7 @@ class _PrePickUpPageStateV2 extends State<PrePickUpPageV2> {
 
   @override
   void initState() {
+    context.read<PickUpCubit>().setPointerAddress(-1);
     context.read<PickUpCubit>().init();
 
     super.initState();
@@ -31,16 +33,23 @@ class _PrePickUpPageStateV2 extends State<PrePickUpPageV2> {
   Widget build(BuildContext context1) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Solicita una recogida ;)"),
+        title: const Text("Solicita un pickup :)"),
       ),
       body: BlocConsumer<PickUpCubit, PickUpState>(
         listener: (ctx3, state) {
           if (state.status == PageStatus.verifying) {
-            _showDialog(
-                context,
-                "Sucursales",
-                "Verificando si el servicio esta disponible en la ubicacion seleccionada",
-                false);
+            showDialog(
+                context: context,
+                builder: (BuildContext context){
+                  return const MyLoadingWidget(title: 'Verificando si el servicio esta disponible en la ubicación seleccionada');
+                }
+            );
+
+            // _showDialog(
+            //     context,
+            //     "Sucursales",
+            //     "Verificando si el servicio esta disponible en la ubicacion seleccionada",
+            //     false);
           } else if (state.status == PageStatus.correctVerified) {
 
             Navigator.pop(ctx3);
@@ -58,9 +67,10 @@ class _PrePickUpPageStateV2 extends State<PrePickUpPageV2> {
         },
         builder: (context, state) {
           if (state.status == PageStatus.loading) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            // return const Center(
+            //   child: CircularProgressIndicator(),
+            // );
+            return const MyLoadingWidget(title: 'Recopilando tu información');
           } else if (state.status == PageStatus.failure) {
             return Center(
               child: Text('Fallo algo ${state.errorMessage} '),
@@ -80,7 +90,7 @@ class _PrePickUpPageStateV2 extends State<PrePickUpPageV2> {
         _schedules(state, context),
         Container(
           height: MediaQuery.of(context).size.height * 0.07,
-          color: Colors.pink,
+          color: Colors.transparent,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
@@ -174,13 +184,14 @@ class _PrePickUpPageStateV2 extends State<PrePickUpPageV2> {
   Widget _schedules(PickUpState state, BuildContext context) {
     return Container(
       height: MediaQuery.of(context).size.height * 0.3,
-      color: Colors.green,
+      color: Color.fromRGBO(147, 147, 147, 1),
       child: Row(
         children: [
           Expanded(
             child: Scrollbar(
               thumbVisibility: true,
               child: ListView.builder(
+                padding: const EdgeInsets.all(5),
                 shrinkWrap: true,
                 itemCount: state.prePickUpInfoV2!.schedule.length,
                 scrollDirection: Axis.vertical,
@@ -198,13 +209,18 @@ class _PrePickUpPageStateV2 extends State<PrePickUpPageV2> {
                       }
                     },
                     child: Container(
+                      margin: const EdgeInsets.symmetric(vertical: 2.0,horizontal: 0.0),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: state.pointerDate == index
+                            ? const Color.fromRGBO(164, 243, 129, 1)
+                            : Colors.white,
+                      ),
                       height: 40,
                       child: Center(
                           child: Text(
                               ' ${state.prePickUpInfoV2?.schedule[index].beautyDay}')),
-                      color: state.pointerDate == index
-                          ? Colors.green
-                          : Colors.white,
+
                     ),
                   );
                 },
@@ -215,6 +231,7 @@ class _PrePickUpPageStateV2 extends State<PrePickUpPageV2> {
             child: Scrollbar(
               thumbVisibility: true,
               child: ListView.builder(
+                padding: const EdgeInsets.all(5),
                 controller: _scrollController,
                 shrinkWrap: true,
                 itemCount: state
@@ -227,13 +244,18 @@ class _PrePickUpPageStateV2 extends State<PrePickUpPageV2> {
                           .setNewTimePointer(index);
                     },
                     child: Container(
+                      margin: const EdgeInsets.symmetric(vertical: 2.0,horizontal: 0.0),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: state.pointerTime == index
+                            ? const Color.fromRGBO(129, 227, 243, 1)
+                            : Colors.white,
+                      ),
                       height: 40,
                       child: Center(
                           child: Text(
                               '${state.prePickUpInfoV2?.schedule[state.pointerDate].hours[index]}')),
-                      color: index == state.pointerTime
-                          ? Colors.blue
-                          : Colors.white,
+                       
                     ),
                   );
                 },
@@ -250,7 +272,7 @@ class _PrePickUpPageStateV2 extends State<PrePickUpPageV2> {
       child: Column(
         children: [
           Center(
-            child: Text("Tus Mapas"),
+            child: Text("Tus ubicaciones guardadas"),
           ),
           Expanded(
             child: Scrollbar(
@@ -261,7 +283,8 @@ class _PrePickUpPageStateV2 extends State<PrePickUpPageV2> {
                   return ListTile(
                     leading: CircleAvatar(
                       backgroundColor: const Color(0xff764abc),
-                      child: Text(index.toString()),
+                      //child: Text(index.toString()),
+                      child:  Icon(Icons.location_history),
                     ),
                     title: Text(state.prePickUpInfoV2!.address[index].name),
                     subtitle:

@@ -4,6 +4,8 @@ import 'package:mr_jeff/cubit/login/page_status.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../widget/dialogs.dart';
+
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
@@ -32,8 +34,14 @@ class _LoginPageState extends State<LoginPage> {
           body: BlocConsumer<LoginCubit, LoginState>(
             listener: (ctx3, state) {
               if (state.status == PageStatus.loading) {
-                _showDialog(context, "Autenticación",
-                    "Verificando sus credenciales", false);
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context){
+                      return const MyLoadingWidget(title: 'Verificando sus credenciales');
+                    }
+                );
+                // _showDialog(context, "Autenticación",
+                //     "Verificando sus credenciales", false);
               } else if (state.status == PageStatus.success &&
                   state.loginSuccess) {
                 Navigator.pop(ctx3);

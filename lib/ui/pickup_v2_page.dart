@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mr_jeff/cubit/pickup/al_pagestatus.dart';
 import 'package:mr_jeff/cubit/pickup/pickup_cubit.dart';
 import 'package:mr_jeff/cubit/pickup/pickup_state.dart';
@@ -15,6 +16,8 @@ class _PickUpPageV2State extends State<PickUpPageV2> {
 
   TextEditingController _controller1 = TextEditingController();
   TextEditingController _controller2 = TextEditingController();
+  late GoogleMapController googleMapController;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -181,8 +184,50 @@ class _PickUpPageV2State extends State<PickUpPageV2> {
             ),
           ),
           Container(
+
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 5,
+                    blurRadius: 7,
+                    offset: Offset(0, 3),
+                  )
+                ]
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+
+              child:Container(
+                height: 170,
+
+                child: GoogleMap(
+                  initialCameraPosition: CameraPosition(
+                      target: LatLng(state.coordinates['lat']!, state.coordinates['lng']! ) ,
+                      zoom: 15),
+                  markers: {
+                    Marker(
+                      markerId: MarkerId('Marker'),
+                      position: LatLng(state.coordinates['lat']!, state.coordinates['lng']!),
+                    )
+                  },
+                  zoomControlsEnabled: false,
+                  mapType: MapType.normal,
+                  onMapCreated: (GoogleMapController controller) {
+                    googleMapController = controller;
+                  },
+
+                ),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Container(
             child: Container(
-              color: Colors.pink,
+              color: Colors.transparent,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
