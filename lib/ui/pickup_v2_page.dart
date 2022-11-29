@@ -20,6 +20,7 @@ class _PickUpPageV2State extends State<PickUpPageV2> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       appBar: AppBar(
         title: Text('Finaliza la solicitud'),
       ),
@@ -105,7 +106,8 @@ class _PickUpPageV2State extends State<PickUpPageV2> {
           SizedBox(
             height: 20,
           ),
-          Expanded(
+          Container(
+            height: 230,
             child: BlocBuilder<PickUpCubit, PickUpState>(
               builder: (context, state) {
                 if (state.pointerAddress == -1) {
@@ -178,38 +180,43 @@ class _PickUpPageV2State extends State<PickUpPageV2> {
               },
             ),
           ),
-          Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 5,
-                    blurRadius: 7,
-                    offset: Offset(0, 3),
-                  )
-                ]),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(20),
-              child: Container(
-                height: 170,
-                child: GoogleMap(
-                  initialCameraPosition: CameraPosition(
-                      target: LatLng(
-                          state.coordinates['lat']!, state.coordinates['lng']!),
-                      zoom: 15),
-                  markers: {
-                    Marker(
-                      markerId: MarkerId('Marker'),
-                      position: LatLng(
-                          state.coordinates['lat']!, state.coordinates['lng']!),
+          Expanded(
+            child: Container(
+
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset: Offset(0, 3),
                     )
-                  },
-                  zoomControlsEnabled: false,
-                  mapType: MapType.normal,
-                  onMapCreated: (GoogleMapController controller) {
-                    googleMapController = controller;
-                  },
+                  ]
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+
+                child:Container(
+                  height: 170,
+
+                  child: GoogleMap(
+                    initialCameraPosition: CameraPosition(
+                        target: LatLng(state.coordinates['lat']!, state.coordinates['lng']! ) ,
+                        zoom: 15),
+                    markers: {
+                      Marker(
+                        markerId: MarkerId('Marker'),
+                        position: LatLng(state.coordinates['lat']!, state.coordinates['lng']!),
+                      )
+                    },
+                    zoomControlsEnabled: false,
+                    mapType: MapType.normal,
+                    onMapCreated: (GoogleMapController controller) {
+                      googleMapController = controller;
+                    },
+
+                  ),
                 ),
               ),
             ),

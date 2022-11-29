@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:mr_jeff/cubit/operation_workers/opecourier_state.dart';
 import 'package:mr_jeff/cubit/pickup/al_pagestatus.dart';
 import 'package:mr_jeff/dto/ope_courier_dto.dart';
@@ -11,17 +12,26 @@ class OpeCourierCubit extends Cubit<OpeCourierState>{
   void init() async {
     emit(state.copyWith(status: PageStatus.loading));
     try{
-      OpeCourierDto opeCourierDto = await OpeCourierService.getOperationInfo("TOKEN MAGICO");
-      List<OpeCourierInfo> listAvailableOpe = opeCourierDto.getInformationAboutDto(opeCourierDto.availableOperations);
-      List<OpeCourierInfo> listCurrentOpe = opeCourierDto.getInformationAboutDto(opeCourierDto.currentOperations);
+      final storage = FlutterSecureStorage();
+      String? token = await storage.read(key: "TOKEN");
+      if(token != null){
+        OpeCourierDto opeCourierDto = await OpeCourierService.getOperationInfo(token);
+        List<OpeCourierInfo> listAvailableOpe = opeCourierDto.getInformationAboutDto(opeCourierDto.availableOperations);
+        List<OpeCourierInfo> listCurrentOpe = opeCourierDto.getInformationAboutDto(opeCourierDto.currentOperations);
 
-      emit(state.copyWith(status: PageStatus.success, availableOperations: listAvailableOpe, currentOperations: listCurrentOpe));
+        emit(state.copyWith(status: PageStatus.success, availableOperations: listAvailableOpe, currentOperations: listCurrentOpe));
+
+      }else{
+        emit(state.copyWith(
+            status: PageStatus.failure,
+            errorMessage: "Usuario no autenticado"));
+      }
 
 
     } on Exception catch(ex, stacktrace){
       emit(state.copyWith(
           status: PageStatus.failure,
-          errorMessage: "Error al consultar prepickup $ex \n $stacktrace"));
+          errorMessage:   ex.toString() ));
     }
   }
 
@@ -68,14 +78,25 @@ class OpeCourierCubit extends Cubit<OpeCourierState>{
   void sendOperation() async {
     emit(state.copyWith(status: PageStatus.verifying2));
     try{
-      OpeCourierInfo flag = state.availableOperations[state.pointerAvailable];
-      bool a = await OpeCourierService.sendOperation(
-          "ASDADS",
-          true,
-          flag
-      );
-      print(a);
-      emit(state.copyWith(status: PageStatus.correctVerified2));
+      final storage = FlutterSecureStorage();
+      String? token = await storage.read(key: "TOKEN");
+      if(token != null){
+        OpeCourierInfo flag = state.availableOperations[state.pointerAvailable];
+
+        bool a = await OpeCourierService.sendOperation(
+            token,
+            true,
+            flag
+        );
+        print(a);
+        emit(state.copyWith(status: PageStatus.correctVerified2));
+
+      }else{
+        emit(state.copyWith(
+            status: PageStatus.failure,
+            errorMessage: "Usuario no autenticado"));
+      }
+
 
     }on Exception catch(ex, extrace){
       emit(state.copyWith(
