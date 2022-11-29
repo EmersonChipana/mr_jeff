@@ -15,38 +15,41 @@ class _ClothingsOrderScreenState extends State<ClothingsOrderScreen> {
   @override
   Widget build(BuildContext context) {
     final screenCubit = BlocProvider.of<ClothingsOrderCubit>(context);
+    screenCubit.loadInitialData();
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Pedido"),
-      ),
-      body: BlocConsumer<ClothingsOrderCubit, ClothingsOrderState>(
-          bloc: screenCubit,
-          listener: (BuildContext context, ClothingsOrderState state) {
-            if (state.error != null) {
-              // TODO your code here
-            }
-          },
-          builder: (BuildContext context, ClothingsOrderState state) {
-            if (state.isLoading) {
-              return const Center(child: CircularProgressIndicator());
-            } else {
-              return buildBody(state);
-            }
-          }),
-      bottomNavigationBar:
-          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-        ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
+        appBar: AppBar(
+          title: const Text("Pedido"),
+        ),
+        body: BlocConsumer<ClothingsOrderCubit, ClothingsOrderState>(
+            bloc: screenCubit,
+            listener: (BuildContext context, ClothingsOrderState state) {
+              if (state.error != null) {
+                // TODO your code here
+              }
             },
-            child: const Text("Cancelar")),
-        ElevatedButton(
-            onPressed: () {
-              // TODO your code here
-            },
-            child: const Text("Continuar")),
-      ]),
-    );
+            builder: (BuildContext context, ClothingsOrderState state) {
+              if (state.isLoading) {
+                return const Center(child: CircularProgressIndicator());
+              } else {
+                return buildBody(state);
+              }
+            }),
+        bottomNavigationBar: Container(
+          margin: const EdgeInsets.all(20),
+          child:
+              Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text("Cancelar")),
+            ElevatedButton(
+                onPressed: () {
+                  // TODO your code here
+                },
+                child: const Text("Continuar")),
+          ]),
+        ));
   }
 
   Widget buildBody(ClothingsOrderState state) {
@@ -56,7 +59,12 @@ class _ClothingsOrderScreenState extends State<ClothingsOrderScreen> {
     }
     return ListView(
       children: [
-        const Center(child: Text("Tus productos")),
+        Container(
+          margin: const EdgeInsets.all(15),
+          child: const Center(
+              child: Text("Tus productos",
+                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold))),
+        ),
         for (final clothing in state.clothings)
           ClothingsOfOrderCard(
             quantity: clothing.quantity,
@@ -64,10 +72,15 @@ class _ClothingsOrderScreenState extends State<ClothingsOrderScreen> {
             total: clothing.total,
             image: clothing.image,
           ),
-        Text("Total: $total bs.",
-            style: const TextStyle(
-              fontSize: 20,
-            )),
+        Container(
+          width: double.infinity,
+          alignment: Alignment.centerRight,
+          margin: const EdgeInsets.all(15),
+          child: Text("Total:    $total bs.",
+              style: const TextStyle(
+                fontSize: 20,
+              )),
+        )
       ],
     );
   }
