@@ -24,21 +24,45 @@ class _OrderScreenState extends State<OrderScreen> {
       body: BlocConsumer<OrderCubit, OrderState>(
         bloc: screenCubit,
         listener: (BuildContext context, OrderState state) {
-          if (state.error != null) {
-            // TODO your code here
-          }
+          if (state.error != null) {}
         },
         builder: (BuildContext context, OrderState state) {
           if (state.isLoading) {
             return const Center(child: CircularProgressIndicator());
           }
           if (state.empty) {
-            return const Center(child: Text("No hay productos en el pedido"));
+            return const Center(child: Text("El carrito está vacío"));
+          }
+
+          if (state.submit) {
+            _showDialog(context, "Pedido enviado",
+                "Su pedido se ha enviado correctamente", screenCubit);
           }
 
           return buildBody(state);
         },
       ),
+      bottomNavigationBar: screenCubit.state.empty
+          ? Container(
+              margin: const EdgeInsets.all(10),
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text("Agregar más productos"),
+              ),
+            )
+          : Container(
+              margin: const EdgeInsets.all(10),
+              child: ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    screenCubit.addAllClothings();
+                  });
+                },
+                child: const Text("Confirmar pedido"),
+              ),
+            ),
     );
   }
 
@@ -62,12 +86,12 @@ class _OrderScreenState extends State<OrderScreen> {
           margin: const EdgeInsets.symmetric(horizontal: 80),
           child: ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(context, "/");
+                Navigator.pop(context);
               },
               child: const Text("Agregar más productos")),
         ),
         Container(
-          margin: const EdgeInsets.all(10),
+          margin: const EdgeInsets.all(20),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -79,14 +103,6 @@ class _OrderScreenState extends State<OrderScreen> {
             ],
           ),
         ),
-        Container(
-          margin: const EdgeInsets.all(10),
-          child: ElevatedButton(
-              onPressed: () {
-                // TODO your code here
-              },
-              child: const Text("Confirmar Pedido")),
-        )
       ],
     );
   }
@@ -97,5 +113,37 @@ class _OrderScreenState extends State<OrderScreen> {
       total += state.clothes[i].price * state.clothes[i].quantity;
     }
     return total;
+  }
+
+  Future<void> _showDialog(BuildContext context, String title, String message,
+      OrderCubit order) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text(message),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+                onPressed: () {
+                  setState(() {
+                    order.reset();
+                    Navigator.of(context).pop();
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, "/home", (route) => false);
+                  });
+                },
+                child: const Text("OK"))
+          ],
+        );
+      },
+    );
   }
 }

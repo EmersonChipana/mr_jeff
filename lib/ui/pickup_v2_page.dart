@@ -13,7 +13,6 @@ class PickUpPageV2 extends StatefulWidget {
 }
 
 class _PickUpPageV2State extends State<PickUpPageV2> {
-
   TextEditingController _controller1 = TextEditingController();
   TextEditingController _controller2 = TextEditingController();
   late GoogleMapController googleMapController;
@@ -24,48 +23,45 @@ class _PickUpPageV2State extends State<PickUpPageV2> {
       appBar: AppBar(
         title: Text('Finaliza la solicitud'),
       ),
-      body: BlocConsumer<PickUpCubit,PickUpState>(
-        builder: (context, state){
+      body: BlocConsumer<PickUpCubit, PickUpState>(
+        builder: (context, state) {
           return _newAddressForUser(context, state);
         },
-        listener: (context, state){
-          if(state.status == PageStatus.verifying2){
+        listener: (context, state) {
+          if (state.status == PageStatus.verifying2) {
             print(' 1 ----------> pagestatus.verifying2');
             BlocProvider.of<PickUpCubit>(context)
                 .setPageState(PageStatus.success);
-            _showDialog(context, 'Ingresando', 'Se esta creando la solicitud', false , (){  });
-
-          }else if(state.status == PageStatus.incorrectVerified2){
+            _showDialog(context, 'Ingresando', 'Se esta creando la solicitud',
+                false, () {});
+          } else if (state.status == PageStatus.incorrectVerified2) {
             print(' 1 ----------> pagestatus.incorrectVerified2');
-            _showDialog(context, 'Error', state.errorMessage!, true, (){
+            _showDialog(context, 'Error', state.errorMessage!, true, () {
               Navigator.of(context).pop();
             });
             BlocProvider.of<PickUpCubit>(context)
                 .setPageState(PageStatus.success);
-          } else if(state.status == PageStatus.correctVerified2){
-
+          } else if (state.status == PageStatus.correctVerified2) {
             print(' 1 ----------> pagestatus.correctVerified');
-            _showDialog(context, 'THANK YOU', 'SE CREO EL PICK UP EXITOSAMENTE', true , (){
+            _showDialog(
+                context, 'THANK YOU', 'SE CREO EL PICK UP EXITOSAMENTE', true,
+                () {
               print('pageStatus.correctvVerified');
               Navigator.popUntil(context, ModalRoute.withName('/home'));
               BlocProvider.of<PickUpCubit>(context)
                   .setPageState(PageStatus.success);
-              BlocProvider.of<PickUpCubit>(context)
-                  .setInitial( );
-
+              BlocProvider.of<PickUpCubit>(context).setInitial();
             });
 
-
-
             //Navigator.of(context).popUntil((route) => route.isFirst);
-          } else if(state.status == PageStatus.failure){
+          } else if (state.status == PageStatus.failure) {
             Navigator.of(context).pop();
-            _showDialog(context, 'No se pudo completar  el pickup', state.errorMessage!, true, () {
+            _showDialog(context, 'No se pudo completar  el pickup',
+                state.errorMessage!, true, () {
               Navigator.popUntil(context, ModalRoute.withName('/home'));
               BlocProvider.of<PickUpCubit>(context)
                   .setPageState(PageStatus.success);
-              BlocProvider.of<PickUpCubit>(context)
-                  .setInitial( );
+              BlocProvider.of<PickUpCubit>(context).setInitial();
             });
           }
         },
@@ -92,7 +88,7 @@ class _PickUpPageV2State extends State<PickUpPageV2> {
             children: [
               Text("Fecha"),
               Text(
-                  '${state.prePickUpInfoV2?.schedule[state.pointerDate].beautyDay }')
+                  '${state.prePickUpInfoV2?.schedule[state.pointerDate].beautyDay}')
             ],
           ),
           SizedBox(
@@ -103,7 +99,7 @@ class _PickUpPageV2State extends State<PickUpPageV2> {
             children: [
               Text("Hora"),
               Text(
-                  '${state.prePickUpInfoV2?.schedule[state.pointerDate].hours[state.pointerTime] } ')
+                  '${state.prePickUpInfoV2?.schedule[state.pointerDate].hours[state.pointerTime]} ')
             ],
           ),
           SizedBox(
@@ -128,8 +124,7 @@ class _PickUpPageV2State extends State<PickUpPageV2> {
                           controller: _controller1,
                           decoration: const InputDecoration(
                               hintText: "Nombre que deseas asignar",
-                              border: OutlineInputBorder()
-                          ),
+                              border: OutlineInputBorder()),
                         ),
                         SizedBox(
                           height: 20,
@@ -138,8 +133,7 @@ class _PickUpPageV2State extends State<PickUpPageV2> {
                           controller: _controller2,
                           decoration: const InputDecoration(
                               hintText: "Detalles que quieras agregar",
-                              border: OutlineInputBorder()
-                          ),
+                              border: OutlineInputBorder()),
                         ),
                       ],
                     ),
@@ -159,7 +153,8 @@ class _PickUpPageV2State extends State<PickUpPageV2> {
                             const SizedBox(
                               height: 20,
                             ),
-                            Text('${state.prePickUpInfoV2?.address[state.pointerAddress].name}')
+                            Text(
+                                '${state.prePickUpInfoV2?.address[state.pointerAddress].name}')
                           ],
                         ),
                       ),
@@ -184,7 +179,6 @@ class _PickUpPageV2State extends State<PickUpPageV2> {
             ),
           ),
           Container(
-
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
                 boxShadow: [
@@ -194,22 +188,21 @@ class _PickUpPageV2State extends State<PickUpPageV2> {
                     blurRadius: 7,
                     offset: Offset(0, 3),
                   )
-                ]
-            ),
+                ]),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20),
-
-              child:Container(
+              child: Container(
                 height: 170,
-
                 child: GoogleMap(
                   initialCameraPosition: CameraPosition(
-                      target: LatLng(state.coordinates['lat']!, state.coordinates['lng']! ) ,
+                      target: LatLng(
+                          state.coordinates['lat']!, state.coordinates['lng']!),
                       zoom: 15),
                   markers: {
                     Marker(
                       markerId: MarkerId('Marker'),
-                      position: LatLng(state.coordinates['lat']!, state.coordinates['lng']!),
+                      position: LatLng(
+                          state.coordinates['lat']!, state.coordinates['lng']!),
                     )
                   },
                   zoomControlsEnabled: false,
@@ -217,7 +210,6 @@ class _PickUpPageV2State extends State<PickUpPageV2> {
                   onMapCreated: (GoogleMapController controller) {
                     googleMapController = controller;
                   },
-
                 ),
               ),
             ),
@@ -242,8 +234,7 @@ class _PickUpPageV2State extends State<PickUpPageV2> {
                         print(_controller2.text);
                         print(_controller1.text);
 
-                        BlocProvider.of<PickUpCubit>(context)
-                            .endPickUpRequest(
+                        BlocProvider.of<PickUpCubit>(context).endPickUpRequest(
                             _controller1.text, _controller2.text);
                       },
                       child: const Text("Continuar")),
@@ -256,10 +247,8 @@ class _PickUpPageV2State extends State<PickUpPageV2> {
     );
   }
 
-  Future<void> _showDialog(BuildContext context,
-      String title, String message,
-      bool closeable,
-      VoidCallback callback) async {
+  Future<void> _showDialog(BuildContext context, String title, String message,
+      bool closeable, VoidCallback callback) async {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
@@ -276,12 +265,14 @@ class _PickUpPageV2State extends State<PickUpPageV2> {
           actions: <Widget>[
             closeable
                 ? TextButton(
-              child: const Text('Cerrar'),
-              // onPressed: () {
-              //   Navigator.of(context).pop();
-              // },
-              onPressed: callback,
-            )
+                    child: const Text('Cerrar'),
+                    // onPressed: () {
+                    //   Navigator.of(context).pop();
+                    // },
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  )
                 : Container(),
           ],
         );

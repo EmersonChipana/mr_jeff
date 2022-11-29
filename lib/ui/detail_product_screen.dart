@@ -22,6 +22,7 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
   @override
   Widget build(BuildContext context) {
     final screen = BlocProvider.of<DetailProductCubit>(context);
+    final order = BlocProvider.of<OrderCubit>(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text("Mr. Jeff"),
@@ -39,6 +40,34 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
           }
           return buildBody(state);
         },
+      ),
+      bottomNavigationBar: Container(
+        margin: const EdgeInsets.all(10),
+        child: ElevatedButton(
+          onPressed: () {
+            setState(() {
+              List<ServiceDto> list = [];
+              double total = 0;
+              for (int i = 0; i < order.state.servicesSelected.length; i++) {
+                if (order.state.servicesSelected[i] == true) {
+                  list.add(screen.state.clothing!.services[i]);
+                  total += screen.state.clothing!.services[i].price;
+                }
+              }
+              ClothingOrderModel clothing = ClothingOrderModel(
+                  id: screen.state.clothing?.id ?? 0,
+                  title: screen.state.clothing?.title ?? "",
+                  price: total,
+                  quantity: quantity,
+                  image: screen.state.clothing?.images[0].image ?? "",
+                  services: list);
+              order.addClothing(clothing);
+              order.setTotal(total);
+              Navigator.pushNamed(context, "/clothings");
+            });
+          },
+          child: const Text("Agregar al carrito"),
+        ),
       ),
     );
   }
@@ -146,34 +175,6 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
           },
         ),
         const SizedBox(height: 20),
-        Container(
-          margin: const EdgeInsets.all(20),
-          child: FloatingActionButton.extended(
-            onPressed: () {
-              setState(() {
-                List<ServiceDto> list = [];
-                double total = 0;
-                for (int i = 0; i < order.state.servicesSelected.length; i++) {
-                  if (order.state.servicesSelected[i] == true) {
-                    list.add(state.clothing!.services[i]);
-                    total += state.clothing!.services[i].price;
-                  }
-                }
-                ClothingOrderModel clothing = ClothingOrderModel(
-                    id: state.clothing?.id ?? 0,
-                    title: state.clothing?.title ?? "",
-                    price: total,
-                    quantity: quantity,
-                    image: state.clothing?.images[0].image ?? "",
-                    services: list);
-                order.addClothing(clothing);
-                order.setTotal(total);
-                Navigator.pushNamed(context, "/");
-              });
-            },
-            label: const Text("Agregar al carrito"),
-          ),
-        )
       ],
     );
   }

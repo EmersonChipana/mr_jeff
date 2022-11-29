@@ -85,7 +85,7 @@ class ProductCard extends StatelessWidget {
           }
         }
         order.loadInitialData(stateServices);
-        Navigator.pushNamed(context, "/clothing", arguments: {"id": id});
+        Navigator.pushNamed(context, "/detail", arguments: {"id": id});
       },
     );
   }

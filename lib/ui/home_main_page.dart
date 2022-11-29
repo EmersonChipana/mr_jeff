@@ -105,18 +105,24 @@ class NavDrawer extends StatelessWidget {
             title: Text('Solicitar un pickup'),
             onTap: () {
               Navigator.of(context).pop();
-              Navigator.pushNamed(context, '/prepickup');
+              Navigator.pushNamed(context, '/prepickupv2');
             },
           ),
           ListTile(
             leading: Icon(Icons.verified_user),
-            title: Text('Profile'),
-            onTap: () => {},
+            title: Text('Productos'),
+            onTap: () => {
+              Navigator.of(context).pop(),
+              Navigator.pushNamed(context, '/clothings')
+            },
           ),
           ListTile(
             leading: Icon(Icons.settings),
-            title: Text('Settings'),
-            onTap: () => {Navigator.of(context).pop()},
+            title: Text('PreDelivery'),
+            onTap: () => {
+              Navigator.of(context).pop(),
+              Navigator.pushNamed(context, '/preDelivery')
+            },
           ),
           ListTile(
             leading: Icon(Icons.border_color),
@@ -133,9 +139,8 @@ class NavDrawer extends StatelessWidget {
               title: Text("PICKUP V2"),
               onTap: () {
                 Navigator.of(context).pop();
-              Navigator.pushNamed(context, '/prepickupv2');
-              }
-          )
+                Navigator.pushNamed(context, '/prepickupv2');
+              })
         ],
       ),
     );
