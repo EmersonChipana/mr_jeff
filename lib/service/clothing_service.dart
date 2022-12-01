@@ -13,7 +13,6 @@ class ClothingService {
     var uri = Uri.parse("$url/api/v1/clothing/category/$categoryId");
     Map<String, String> headers = {
       "Accept": "application/json",
-      //"Authorization": "Bearer $token",
     };
     var response = await http.get(uri, headers: headers);
     if (response.statusCode == 200) {
@@ -31,13 +30,12 @@ class ClothingService {
     return result;
   }
 
-  Future<ClothingDto> getClothingById(String token, int productId) async {
+  Future<ClothingDto> getClothingById(int productId) async {
     const url = ipUrl;
     ClothingDto result;
     var uri = Uri.parse("$url/api/v1/clothing/$productId");
     Map<String, String> headers = {
-      "Accept": "application/json"
-      //"Authorization": "Bearer $token",
+      "Accept": "application/json",
     };
     var response = await http.get(uri, headers: headers);
     if (response.statusCode == 200) {

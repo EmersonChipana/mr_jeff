@@ -1,20 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:mr_jeff/cubit/inital_products/inital_products_cubit.dart';
 import 'package:mr_jeff/cubit/inital_products/inital_products_state.dart';
 import 'package:mr_jeff/widget/page_of_products.dart';
 
-class InitalProductsScreen extends StatefulWidget {
-  const InitalProductsScreen({Key? key}) : super(key: key);
+class CatalogScreen extends StatefulWidget {
+  const CatalogScreen({super.key});
 
   @override
-  _InitalProductsScreenState createState() => _InitalProductsScreenState();
+  State<CatalogScreen> createState() => _CatalogScreenState();
 }
 
-class _InitalProductsScreenState extends State<InitalProductsScreen> {
+class _CatalogScreenState extends State<CatalogScreen> {
   final screenCubit = InitalProductsCubit()..loadInitialData();
-
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<InitalProductsCubit, InitalProductsState>(
@@ -33,14 +31,8 @@ class _InitalProductsScreenState extends State<InitalProductsScreen> {
         return DefaultTabController(
             length: screenCubit.state.categories.length,
             child: Scaffold(
-              floatingActionButton: FloatingActionButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, "/order");
-                },
-                child: const Icon(Icons.shopping_cart),
-              ),
               appBar: AppBar(
-                title: const Text('Mr. Jeff'),
+                title: const Text('Catálogo de productos'),
                 bottom: TabBar(
                   isScrollable: true,
                   tabs: screenCubit.state.categories
@@ -52,9 +44,18 @@ class _InitalProductsScreenState extends State<InitalProductsScreen> {
                 children: screenCubit.state.categories
                     .map((category) => PageOfProducts(
                           categoryId: category.id ?? 1,
-                          isOrder: true,
+                          isOrder: false,
                         ))
                     .toList(),
+              ),
+              bottomNavigationBar: Container(
+                margin: const EdgeInsets.only(bottom: 10, left: 20, right: 20),
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, "/prepickupv2");
+                  },
+                  child: const Text('Solicitar servicio!'),
+                ),
               ),
             ));
       },

@@ -1,9 +1,12 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:mr_jeff/cubit/clothings_order/clothings_order_cubit.dart';
 import 'package:mr_jeff/cubit/pickup/al_pagestatus.dart';
 import 'package:mr_jeff/cubit/pickup/pickup_state.dart';
 import 'package:mr_jeff/dto/pickup_dto/prepickupinfo_v2_dto.dart';
 import 'package:mr_jeff/model/pickup_model_v2/prepickup_info_model_v2.dart';
+import 'package:mr_jeff/service/delivery_service.dart';
 import 'package:mr_jeff/service/pickup_service/prepickup_v2_service.dart';
 import 'package:mr_jeff/service/prepickup_service.dart';
 
@@ -114,29 +117,30 @@ class PickUpCubit extends Cubit<PickUpState> {
     }
   }
 
-  void endDeliveryRequest(String name, String detail, String comment) async {
+  void endDeliveryRequest(
+      String name, String detail, String comment, int? id) async {
     if (state.pointerAddress == -1) {
       if (name.isEmpty) {
         emit(state.copyWith(
             status: PageStatus.incorrectVerified2,
             errorMessage: 'Por favor introduzca al menos el nombre'));
       } else {
-        endDelivery(name, detail, comment);
+        endDelivery(name, detail, comment, 1);
       }
     } else {
-      endDelivery(name, detail, comment);
+      endDelivery(name, detail, comment, 1);
     }
   }
 
-  void endDelivery(String name, String detail, String coment) async {
+  void endDelivery(String name, String detail, String comment, int id) async {
     emit(state.copyWith(status: PageStatus.verifying2));
     final storage = FlutterSecureStorage();
     String? token = await storage.read(key: "TOKEN");
     try {
       if (token != null) {
-        Map<String, dynamic> maped = mapTheRequest(name, detail);
+        Map<String, dynamic> maped = mapDelivery(name, detail, comment, id);
 
-        bool stado = await PickUpService.addNewPickUp(maped, token);
+        bool stado = await DeliveryService().createDelivery(maped, token);
 
         if (stado) {
           emit(state.copyWith(status: PageStatus.correctVerified2));
@@ -188,6 +192,36 @@ class PickUpCubit extends Cubit<PickUpState> {
       emit(state.copyWith(
           status: PageStatus.failure, errorMessage: ex.toString()));
     }
+  }
+
+  Map<String, dynamic> mapDelivery(
+      String name1, String detail1, String comment, int id) {
+    int addressId = 0;
+    String name = name1;
+    String detail = detail1;
+    String addressLink = '';
+    if (state.pointerAddress != -1) {
+      addressId =
+          state.prePickUpInfoV2!.address[state.pointerAddress].mrAddressId;
+      name = state.prePickUpInfoV2!.address[state.pointerAddress].name;
+      detail = state.prePickUpInfoV2!.address[state.pointerAddress].detail;
+      addressLink =
+          state.prePickUpInfoV2!.address[state.pointerAddress].addressLink;
+    }
+    Map<String, dynamic> maped = {
+      "addressId": addressId,
+      "name": name,
+      "latitude": state.coordinates['lat'],
+      "longitude": state.coordinates['lng'],
+      "detail": detail,
+      "addressLink": addressLink,
+      "timeId": state.prePickUpInfoV2!.schedule[state.pointerDate]
+          .hours[state.pointerTime].mrScheduleId,
+      "date": state.prePickUpInfoV2!.schedule[state.pointerDate].day,
+      "comment": comment,
+      "orderId": id
+    };
+    return maped;
   }
 
   Map<String, dynamic> mapTheRequest(String name1, String detail1) {

@@ -111,7 +111,7 @@ class OrderCubit extends Cubit<OrderState> {
               idOrder: 1));
         }
       }
-      response = await OrderService().addClothingOrder(clothes);
+      response = await OrderService().addClothingOrder(clothes, "");
       if (response) {
         emit(state.copyWith(submit: true));
       } else {
@@ -123,7 +123,7 @@ class OrderCubit extends Cubit<OrderState> {
     }
   }
 
-  Future<void> reset() async {
+  /* Future<void> reset() async {
     emit(OrderState(clothes: [], empty: true, isLoading: false));
-  }
+  } */
 }

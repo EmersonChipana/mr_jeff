@@ -11,7 +11,7 @@ class ClothingsOrderCubit extends Cubit<ClothingsOrderState> {
       emit(state.copyWith(isLoading: true));
       try {
         final clothings =
-            await DeliveryService().getClothingsOrder(state.id ?? 1);
+            await DeliveryService().getClothingsOrder(state.id ?? 1, "");
         emit(state.copyWith(clothings: clothings));
       } catch (e) {
         emit(state.copyWith(isLoading: false, error: e.toString()));

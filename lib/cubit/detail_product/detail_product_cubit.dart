@@ -1,6 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mr_jeff/cubit/detail_product/detail_product_state.dart';
-import 'package:mr_jeff/dto/clothing_dto.dart';
 import 'package:mr_jeff/service/clothing_service.dart';
 
 class DetailProductCubit extends Cubit<DetailProductState> {
@@ -21,10 +20,10 @@ class DetailProductCubit extends Cubit<DetailProductState> {
     final stableState = state;
     try {
       emit(state.copyWith(isLoading: true));
-      try{
-        final clothing = await ClothingService().getClothingById("",id);
+      try {
+        final clothing = await ClothingService().getClothingById(id);
         emit(state.copyWith(clothing: clothing));
-      }catch(error){
+      } catch (error) {
         emit(state.copyWith(error: "Error al cargar la prenda"));
       }
       emit(state.copyWith(isLoading: false));

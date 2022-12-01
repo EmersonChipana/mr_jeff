@@ -33,13 +33,6 @@ class _OrderScreenState extends State<OrderScreen> {
           if (state.empty) {
             return const Center(child: Text("El carrito está vacío"));
           }
-
-          if (state.submit) {
-            Navigator.pushNamed(context, "/home");
-            /* _showDialog(context, "Pedido enviado",
-                "Su pedido se ha enviado correctamente", screenCubit); */
-          }
-
           return buildBody(state);
         },
       ),
@@ -57,9 +50,8 @@ class _OrderScreenState extends State<OrderScreen> {
               margin: const EdgeInsets.all(10),
               child: ElevatedButton(
                 onPressed: () {
-                  setState(() {
-                    screenCubit.addAllClothings();
-                  });
+                  screenCubit.addAllClothings();
+                  Navigator.pushNamed(context, "/home");
                 },
                 child: const Text("Confirmar pedido"),
               ),
@@ -114,37 +106,5 @@ class _OrderScreenState extends State<OrderScreen> {
       total += state.clothes[i].price * state.clothes[i].quantity;
     }
     return total;
-  }
-
-  Future<void> _showDialog(BuildContext context, String title, String message,
-      OrderCubit order) async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(title),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Text(message),
-              ],
-            ),
-          ),
-          actions: [
-            TextButton(
-                onPressed: () {
-                  setState(() {
-                    order.reset();
-                    Navigator.of(context).pop();
-                    Navigator.pushNamedAndRemoveUntil(
-                        context, "/home", (route) => false);
-                  });
-                },
-                child: const Text("OK"))
-          ],
-        );
-      },
-    );
   }
 }

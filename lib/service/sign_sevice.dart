@@ -25,12 +25,18 @@ class SignService {
       "Accept": "application/json"
     };
     var response = await http.post(uri, headers: headers, body: body);
-
-    /*if (response.statusCode == 200) {
-      return ResponseDto.fromJson(jsonDecode(response.body));
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body);
+      var responseDto = ResponseDto.fromJson(data);
+      if (responseDto.success) {
+        var userInfoDto = UserInfoDto.fromJson(responseDto.data);
+        print(userInfoDto);
+      } else {
+        print(responseDto.message);
+      }
     } else {
-      throw Exception('Failed to sign up');
-    }*/
+      print(response.statusCode);
+    }
   }
 
   void signv2(String firstName, String lastName, String numPhone, String email,
