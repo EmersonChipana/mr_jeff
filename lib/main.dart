@@ -5,11 +5,10 @@ import 'package:mr_jeff/cubit/clothings_order/clothings_order_cubit.dart';
 import 'package:mr_jeff/cubit/detail_product/detail_product_cubit.dart';
 import 'package:mr_jeff/cubit/order/order_cubit.dart';
 import 'package:mr_jeff/cubit/pickup/pickup_cubit.dart';
-<<<<<<< HEAD
+
 import 'package:mr_jeff/cubit/sign/sign_cubit.dart';
 import 'package:mr_jeff/ui/app_screen.dart';
-=======
->>>>>>> 13c908fcaab79ed0e77f40e8b1a1bf30f48301a5
+
 import 'package:mr_jeff/ui/clothings_order_screen.dart';
 import 'package:mr_jeff/ui/delivery_screen.dart';
 import 'package:mr_jeff/ui/detail_clothing_screen.dart';
