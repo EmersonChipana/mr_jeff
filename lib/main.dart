@@ -15,6 +15,7 @@ import 'package:mr_jeff/ui/login.dart';
 import 'package:mr_jeff/ui/home_main_page.dart';
 import 'package:mr_jeff/ui/pickup_v2_page.dart';
 import 'package:mr_jeff/ui/prepickup_v2_page.dart';
+import 'package:mr_jeff/ui/register.dart';
 import 'package:mr_jeff/ui/worker_diary.dart';
 import 'package:mr_jeff/ui/worker_diary_v2_page.dart';
 
@@ -67,6 +68,7 @@ class MyApp extends StatelessWidget {
           '/clothings': (context) => const InitalProductsScreen(),
           '/detail': (context) => const DetailProductScreen(),
           '/preDelivery': (context) => const ClothingsOrderScreen(),
+          '/sign': (context) => const RegisterPage(),
         },
       ),
     );
