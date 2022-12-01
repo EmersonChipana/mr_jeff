@@ -7,6 +7,7 @@ import 'package:mr_jeff/cubit/order/order_cubit.dart';
 import 'package:mr_jeff/cubit/pickup/pickup_cubit.dart';
 import 'package:mr_jeff/ui/app_screen.dart';
 import 'package:mr_jeff/ui/clothings_order_screen.dart';
+import 'package:mr_jeff/ui/delivery_screen.dart';
 import 'package:mr_jeff/ui/detail_product_screen.dart';
 import 'package:mr_jeff/ui/inital_products_screen.dart';
 import 'package:mr_jeff/ui/order_screen.dart';
@@ -14,6 +15,7 @@ import 'package:mr_jeff/ui/index.dart';
 import 'package:mr_jeff/ui/login.dart';
 import 'package:mr_jeff/ui/home_main_page.dart';
 import 'package:mr_jeff/ui/pickup_v2_page.dart';
+import 'package:mr_jeff/ui/pre_delivery_screen.dart';
 import 'package:mr_jeff/ui/prepickup_v2_page.dart';
 import 'package:mr_jeff/ui/worker_diary.dart';
 import 'package:mr_jeff/ui/worker_diary_v2_page.dart';
@@ -67,6 +69,8 @@ class MyApp extends StatelessWidget {
           '/clothings': (context) => const InitalProductsScreen(),
           '/detail': (context) => const DetailProductScreen(),
           '/preDelivery': (context) => const ClothingsOrderScreen(),
+          '/setAddressDelivery':(context) => const PreDeliveryScreen(),
+          '/delivery':(context) => const DeliveryScreen(), 
         },
       ),
     );

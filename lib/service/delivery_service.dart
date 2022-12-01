@@ -30,4 +30,8 @@ class DeliveryService {
     }
     return result;
   }
+
+  Future<void> createDelivery(Map<String, dynamic> mapa, String token) async {
+    
+  }
 }

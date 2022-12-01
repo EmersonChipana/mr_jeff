@@ -45,7 +45,7 @@ class _ClothingsOrderScreenState extends State<ClothingsOrderScreen> {
                 child: const Text("Cancelar")),
             ElevatedButton(
                 onPressed: () {
-                  // TODO your code here
+                  Navigator.pushNamed(context, "/setAddressDelivery");
                 },
                 child: const Text("Continuar")),
           ]),
@@ -53,10 +53,6 @@ class _ClothingsOrderScreenState extends State<ClothingsOrderScreen> {
   }
 
   Widget buildBody(ClothingsOrderState state) {
-    double total = 0;
-    for (final clothing in state.clothings) {
-      total += clothing.total;
-    }
     return ListView(
       children: [
         Container(
@@ -76,7 +72,7 @@ class _ClothingsOrderScreenState extends State<ClothingsOrderScreen> {
           width: double.infinity,
           alignment: Alignment.centerRight,
           margin: const EdgeInsets.all(15),
-          child: Text("Total:    $total bs.",
+          child: Text("Total:    ${state.total} bs.",
               style: const TextStyle(
                 fontSize: 20,
               )),

@@ -35,8 +35,9 @@ class _OrderScreenState extends State<OrderScreen> {
           }
 
           if (state.submit) {
-            _showDialog(context, "Pedido enviado",
-                "Su pedido se ha enviado correctamente", screenCubit);
+            Navigator.pushNamed(context, "/home");
+            /* _showDialog(context, "Pedido enviado",
+                "Su pedido se ha enviado correctamente", screenCubit); */
           }
 
           return buildBody(state);
