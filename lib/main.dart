@@ -5,6 +5,7 @@ import 'package:mr_jeff/cubit/clothings_order/clothings_order_cubit.dart';
 import 'package:mr_jeff/cubit/detail_product/detail_product_cubit.dart';
 import 'package:mr_jeff/cubit/order/order_cubit.dart';
 import 'package:mr_jeff/cubit/pickup/pickup_cubit.dart';
+import 'package:mr_jeff/cubit/sign/sign_cubit.dart';
 import 'package:mr_jeff/ui/app_screen.dart';
 import 'package:mr_jeff/ui/clothings_order_screen.dart';
 import 'package:mr_jeff/ui/delivery_screen.dart';
@@ -51,6 +52,10 @@ class MyApp extends StatelessWidget {
         BlocProvider<ClothingsOrderCubit>(
           create: (BuildContext context) => ClothingsOrderCubit(),
         ),
+        BlocProvider<SignCubit>(
+          create: (BuildContext context) => SignCubit(),
+        ),
+
       ],
       child: MaterialApp(
         title: 'Mr. Jeff',
