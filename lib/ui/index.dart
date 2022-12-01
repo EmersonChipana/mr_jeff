@@ -33,7 +33,7 @@ class IndexScreen extends StatelessWidget {
               ),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, "/");
+                  Navigator.pushNamed(context, "/sign");
                 },
                 child: const Text('Registrarse'),
               ),
