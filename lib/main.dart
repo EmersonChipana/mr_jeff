@@ -5,9 +5,9 @@ import 'package:mr_jeff/cubit/clothings_order/clothings_order_cubit.dart';
 import 'package:mr_jeff/cubit/detail_product/detail_product_cubit.dart';
 import 'package:mr_jeff/cubit/order/order_cubit.dart';
 import 'package:mr_jeff/cubit/pickup/pickup_cubit.dart';
-import 'package:mr_jeff/ui/app_screen.dart';
 import 'package:mr_jeff/ui/clothings_order_screen.dart';
 import 'package:mr_jeff/ui/delivery_screen.dart';
+import 'package:mr_jeff/ui/detail_clothing_screen.dart';
 import 'package:mr_jeff/ui/detail_product_screen.dart';
 import 'package:mr_jeff/ui/inital_products_screen.dart';
 import 'package:mr_jeff/ui/order_screen.dart';
@@ -20,9 +20,8 @@ import 'package:mr_jeff/ui/prepickup_v2_page.dart';
 import 'package:mr_jeff/ui/register.dart';
 import 'package:mr_jeff/ui/worker_diary.dart';
 import 'package:mr_jeff/ui/worker_diary_v2_page.dart';
-
+import 'package:mr_jeff/widget/catalog.dart';
 import 'cubit/operation_workers/opercourier_cubit.dart';
-import 'cubit/pickup/prepickup/prepickup_cubit.dart';
 
 void main() {
   runApp(const MyApp());
@@ -63,15 +62,17 @@ class MyApp extends StatelessWidget {
           "/order": (context) => const OrderScreen(),
           "/login": (context) => const LoginPage(),
           "/home": (context) => HomePage(),
+          "/catalog": (context) => const CatalogScreen(),
           '/workerDiary': (context) => const WorkerDiaryPage(),
           '/prepickupv2': (context) => const PrePickUpPageV2(),
           '/pickupv2': (context) => const PickUpPageV2(),
           '/workerDiaryV2': (context) => const WorkerDiaryPageV2(),
           '/clothings': (context) => const InitalProductsScreen(),
           '/detail': (context) => const DetailProductScreen(),
+          '/detailClothing': (context) => const DetailClothingScreen(),
           '/preDelivery': (context) => const ClothingsOrderScreen(),
-          '/setAddressDelivery':(context) => const PreDeliveryScreen(),
-          '/delivery':(context) => const DeliveryScreen(), 
+          '/setAddressDelivery': (context) => const PreDeliveryScreen(),
+          '/delivery': (context) => const DeliveryScreen(),
           '/sign': (context) => const RegisterPage(),
         },
       ),

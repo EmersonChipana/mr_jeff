@@ -6,8 +6,10 @@ import 'package:mr_jeff/widget/product_card.dart';
 
 class PageOfProducts extends StatelessWidget {
   final int categoryId;
+  final bool isOrder;
 
-  PageOfProducts({Key? key, required this.categoryId}) : super(key: key);
+  PageOfProducts({Key? key, required this.categoryId, required this.isOrder})
+      : super(key: key);
 
   final screenCubit = ProductsCubit();
 
@@ -34,7 +36,8 @@ class PageOfProducts extends StatelessWidget {
                   price: state.products[index].price,
                   imageUrl: state.products[index].image,
                   id: state.products[index].id,
-                  service: state.products[index].services);
+                  service: state.products[index].services,
+                  active: isOrder);
             });
       },
     );

@@ -9,6 +9,7 @@ class ProductCard extends StatelessWidget {
   final String imageUrl;
   final double price;
   final String service;
+  final bool active;
 
   ProductCard(
       {Key? key,
@@ -16,7 +17,8 @@ class ProductCard extends StatelessWidget {
       required this.imageUrl,
       required this.price,
       required this.id,
-      required this.service});
+      required this.service,
+      required this.active});
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +87,11 @@ class ProductCard extends StatelessWidget {
           }
         }
         order.loadInitialData(stateServices);
-        Navigator.pushNamed(context, "/detail", arguments: {"id": id});
+        if (active) {
+          Navigator.pushNamed(context, "/detail");
+        } else {
+          Navigator.pushNamed(context, "/detailClothing");
+        }
       },
     );
   }
