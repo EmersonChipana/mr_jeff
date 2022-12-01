@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:mr_jeff/cubit/clothings_order/clothings_order_cubit.dart';
 import 'package:mr_jeff/cubit/pickup/al_pagestatus.dart';
 import 'package:mr_jeff/cubit/pickup/pickup_cubit.dart';
 import 'package:mr_jeff/cubit/pickup/pickup_state.dart';
@@ -238,8 +239,14 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
                     child: const Text("Cancelar")),
                 ElevatedButton(
                     onPressed: () {
+                      int? id = BlocProvider.of<ClothingsOrderCubit>(context)
+                          .state
+                          .id;
                       BlocProvider.of<PickUpCubit>(context).endDeliveryRequest(
-                          _controller1.text, _controller2.text, comment.text);
+                          _controller1.text,
+                          _controller2.text,
+                          comment.text,
+                          id);
                     },
                     child: const Text("Continuar")),
               ],

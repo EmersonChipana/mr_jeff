@@ -65,157 +65,174 @@ class _RegisterPageState extends State<RegisterPage> {
       body: Center(
         child: Form(
           key: _formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+          child: ListView(
             children: [
-              TextFormField(
-                controller: _firstNameController,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Nombre',
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Por favor ingrese su nombre';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              TextFormField(
-                controller: _lastNameController,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Apellido',
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Por favor ingrese su apellido';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              TextFormField(
-                controller: _numPhoneController,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Número de teléfono',
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Por favor ingrese su número de teléfono';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              TextFormField(
-                controller: _emailController,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Correo Electrónico',
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Por favor ingrese su correo electrónico';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              TextFormField(
-                controller: _usernameController,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Nombre de Usuario',
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Por favor ingrese su nombre de usuario';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: TextFormField(
-                  controller: _passwordController,
-                  obscureText: true,
-                  onChanged: (value) {
-                    _formKey.currentState!.validate();
-                  },
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return "Ingrese una contraseña";
-                    } else {
-                      //call function to check password
-                      bool result = validatePassword(value);
-                      if (result) {
-                        // create account event
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const SizedBox(height: 20),
+                  const Text("Tus Datos",
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 20),
+                  Container(
+                    margin: const EdgeInsets.all(10),
+                    child: TextFormField(
+                      controller: _firstNameController,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Nombre',
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Por favor ingrese su nombre';
+                        }
                         return null;
-                      } else {
-                        return " Se necesita una mayúscula, minúscula, numero y caracter especial";
-                      }
-                    }
-                  },
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(), hintText: "Contraseña"),
-                ),
+                      },
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                    margin: const EdgeInsets.all(10),
+                    child: TextFormField(
+                      controller: _lastNameController,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Apellido',
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Por favor ingrese su apellido';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                    margin: const EdgeInsets.all(10),
+                    child: TextFormField(
+                      controller: _numPhoneController,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Número de teléfono',
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Por favor ingrese su número de teléfono';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                    margin: const EdgeInsets.all(10),
+                    child: TextFormField(
+                      controller: _emailController,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Correo Electrónico',
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Por favor ingrese su correo electrónico';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                    margin: const EdgeInsets.all(10),
+                    child: TextFormField(
+                      controller: _usernameController,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Nombre de Usuario',
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Por favor ingrese su nombre de usuario';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                    margin: const EdgeInsets.all(10),
+                    child: TextFormField(
+                      controller: _passwordController,
+                      obscureText: true,
+                      onChanged: (value) {
+                        _formKey.currentState!.validate();
+                      },
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "Ingrese una contraseña";
+                        } else {
+                          //call function to check password
+                          bool result = validatePassword(value);
+                          if (result) {
+                            // create account event
+                            return null;
+                          } else {
+                            return " Se necesita una mayúscula, minúscula, numero y caracter especial";
+                          }
+                        }
+                      },
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(), hintText: "Contraseña"),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: LinearProgressIndicator(
+                      value: password_strength,
+                      backgroundColor: Colors.grey[300],
+                      minHeight: 5,
+                      color: password_strength <= 1 / 4
+                          ? Colors.red
+                          : password_strength == 2 / 4
+                              ? Colors.yellow
+                              : password_strength == 3 / 4
+                                  ? Colors.blue
+                                  : Colors.green,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  ElevatedButton(
+                      onPressed: password_strength != 1
+                          ? null
+                          : () {
+                              _signCubit.sign(
+                                  _firstNameController.text,
+                                  _lastNameController.text,
+                                  _numPhoneController.text,
+                                  _emailController.text,
+                                  _usernameController.text,
+                                  _passwordController.text);
+                              Navigator.pushNamed(context, "/");
+                            },
+                      child: Text("Registrarse"))
+                ],
               ),
-              SizedBox(
-                height: 20,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: LinearProgressIndicator(
-                  value: password_strength,
-                  backgroundColor: Colors.grey[300],
-                  minHeight: 5,
-                  color: password_strength <= 1 / 4
-                      ? Colors.red
-                      : password_strength == 2 / 4
-                          ? Colors.yellow
-                          : password_strength == 3 / 4
-                              ? Colors.blue
-                              : Colors.green,
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              ElevatedButton(
-                  onPressed: password_strength != 1
-                      ? null
-                      : () {
-                          _signCubit.sign(
-                              _firstNameController.text,
-                              _lastNameController.text,
-                              _numPhoneController.text,
-                              _emailController.text,
-                              _usernameController.text,
-                              _passwordController.text);
-                          Navigator.pushNamed(context, "/");
-                          /*BlocProvider.of<SignCubit>(signCubit).sign(
-                              _firstNameController.text,
-                              _lastNameController.text,
-                              _emailController.text,
-                              _usernameController.text,
-                              _passwordController.text);
-                        },*/
-                        },
-                  child: Text("Registrarse"))
             ],
           ),
         ),

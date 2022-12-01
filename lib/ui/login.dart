@@ -36,12 +36,10 @@ class _LoginPageState extends State<LoginPage> {
               if (state.status == PageStatus.loading) {
                 showDialog(
                     context: context,
-                    builder: (BuildContext context){
-                      return const MyLoadingWidget(title: 'Verificando sus credenciales');
-                    }
-                );
-                // _showDialog(context, "Autenticación",
-                //     "Verificando sus credenciales", false);
+                    builder: (BuildContext context) {
+                      return const MyLoadingWidget(
+                          title: 'Verificando sus credenciales');
+                    });
               } else if (state.status == PageStatus.success &&
                   state.loginSuccess) {
                 Navigator.pop(ctx3);
@@ -60,19 +58,32 @@ class _LoginPageState extends State<LoginPage> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Text("Login"),
-        TextField(
-          controller: _usernameController,
-          decoration: const InputDecoration(
-            hintText: "Usuario",
+        const Text("Inicio de sesión", style: TextStyle(fontSize: 30)),
+        const SizedBox(height: 50),
+        Container(
+          margin: const EdgeInsets.all(10),
+          child: TextField(
+            controller: _usernameController,
+            decoration: const InputDecoration(
+              hintText: "Usuario",
+              border: OutlineInputBorder(),
+            ),
           ),
         ),
-        TextField(
-          controller: _passwordController,
-          decoration: const InputDecoration(
-            hintText: "Contraseña",
+        Container(
+          margin: const EdgeInsets.all(10),
+          child: TextField(
+            controller: _passwordController,
+            obscureText: true,
+            enableSuggestions: false,
+            autocorrect: false,
+            decoration: const InputDecoration(
+              hintText: "Contraseña",
+              border: OutlineInputBorder(),
+            ),
           ),
         ),
+        const SizedBox(height: 20),
         ElevatedButton(
             onPressed: () {
               BlocProvider.of<LoginCubit>(context)

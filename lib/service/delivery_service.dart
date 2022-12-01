@@ -8,7 +8,8 @@ import 'package:http/http.dart' as http;
 class DeliveryService {
   final url = backendUrlBase;
 
-  Future<List<ClothingsListOrderModel>> getClothingsOrder(int id) async {
+  Future<List<ClothingsListOrderModel>> getClothingsOrder(
+      int id, String token) async {
     List<ClothingsListOrderModel> result = [];
     var uri = Uri.parse("$url/api/v1/order/clothings/$id");
     Map<String, String> headers = {
@@ -31,7 +32,30 @@ class DeliveryService {
     return result;
   }
 
-  Future<void> createDelivery(Map<String, dynamic> mapa, String token) async {
-    
+  Future<bool> createDelivery(Map<String, dynamic> mapa, String token) async {
+    bool result = false;
+    var uri = Uri.parse("$url/api/v1/delivery/create");
+    var body = jsonEncode(mapa);
+
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token'
+    };
+    var response = await http.post(uri, headers: headers, body: body);
+    if (response.statusCode == 200) {
+      ResponseDto backendResponse =
+          ResponseDto.fromJson(jsonDecode(response.body));
+      if (backendResponse.success) {
+        if (backendResponse.data['wasCreated']) {
+          result = true;
+        }
+      } else {
+        throw Exception(backendResponse.message);
+      }
+    } else {
+      throw Exception("problemas con el backend code:${response.statusCode}");
+    }
+    return result;
   }
 }
